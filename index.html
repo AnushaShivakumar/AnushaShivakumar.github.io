@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anusha Shiva Kumar — AI Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #080808; --bg2: #111111; --bg3: #1a1a1a;
+    --amber: #e8a020; --amber-dim: #7a4f08;
+    --text: #d4d0c8; --text-muted: #6b6760; --text-bright: #f0ece0;
+    --border: #222220;
+    --mono: 'IBM Plex Mono', monospace;
+    --serif: 'Cormorant Garamond', serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--mono); font-size: 14px; line-height: 1.7; overflow-x: hidden; }
+  ::selection { background: var(--amber); color: #000; }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--amber-dim); border-radius: 2px; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 3rem;
+    background: rgba(8,8,8,0.85); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: var(--mono); font-size: 12px; color: var(--amber); letter-spacing: 0.1em; text-decoration: none; }
+  .nav-logo span { color: var(--text-muted); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-size: 11px; letter-spacing: 0.12em; color: var(--text-muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--amber); }
+
+  #hero {
+    min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 0 3rem 5rem; position: relative; overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px; opacity: 0.4;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 100%, #000 40%, transparent 100%);
+  }
+  .hero-tag { font-size: 11px; letter-spacing: 0.2em; color: var(--amber); text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.6s 0.3s forwards; }
+  .hero-tag::before { content: '// '; color: var(--text-muted); }
+  .hero-name { font-family: var(--serif); font-size: clamp(4rem, 10vw, 9rem); font-weight: 300; color: var(--text-bright); line-height: 0.95; letter-spacing: -0.02em; opacity: 0; animation: fadeUp 0.6s 0.5s forwards; }
+  .hero-name em { font-style: italic; color: var(--amber); }
+  .hero-sub { margin-top: 2rem; font-size: 13px; color: var(--text-muted); max-width: 540px; line-height: 1.9; opacity: 0; animation: fadeUp 0.6s 0.7s forwards; }
+  .hero-cta { margin-top: 2.5rem; display: flex; gap: 1.5rem; align-items: center; opacity: 0; animation: fadeUp 0.6s 0.9s forwards; }
+  .btn-primary { display: inline-block; padding: 0.75rem 2rem; background: var(--amber); color: #000; font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; transition: opacity 0.2s; }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-ghost { font-size: 11px; letter-spacing: 0.12em; color: var(--text-muted); text-decoration: none; text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 2px; transition: color 0.2s, border-color 0.2s; }
+  .btn-ghost:hover { color: var(--text-bright); border-color: var(--text-muted); }
+
+  section { padding: 7rem 3rem; border-top: 1px solid var(--border); }
+  .section-label { font-size: 10px; letter-spacing: 0.25em; color: var(--amber); text-transform: uppercase; margin-bottom: 0.5rem; }
+  .section-label::before { content: '§ '; color: var(--amber-dim); }
+  .section-title { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 300; color: var(--text-bright); line-height: 1.1; margin-bottom: 3rem; }
+  .section-title em { font-style: italic; color: var(--amber); }
+
+  #about .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .about-bio { font-size: 15px; line-height: 1.9; color: var(--text); }
+  .about-bio p + p { margin-top: 1.25rem; }
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .stat { background: var(--bg); padding: 1.5rem; }
+  .stat-num { font-family: var(--serif); font-size: 3rem; font-weight: 300; color: var(--amber); line-height: 1; display: block; }
+  .stat-label { font-size: 11px; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; margin-top: 0.4rem; display: block; }
+
+  #experience .exp-list { display: flex; flex-direction: column; }
+  .exp-item { display: grid; grid-template-columns: 170px 1fr; gap: 3rem; padding: 2.5rem 0; border-bottom: 1px solid var(--border); position: relative; }
+  .exp-item::before { content: ''; position: absolute; left: -3rem; top: 0; bottom: 0; width: 2px; background: transparent; transition: background 0.2s; }
+  .exp-item:hover::before { background: var(--amber); }
+  .exp-meta { padding-top: 0.2rem; }
+  .exp-date { font-size: 11px; color: var(--text-muted); letter-spacing: 0.08em; display: block; margin-bottom: 0.5rem; }
+  .exp-company { font-size: 12px; color: var(--amber); letter-spacing: 0.08em; display: block; }
+  .exp-badge { display: inline-block; font-size: 9px; letter-spacing: 0.1em; padding: 0.15rem 0.5rem; border: 1px solid var(--amber-dim); color: var(--amber-dim); text-transform: uppercase; margin-top: 0.5rem; }
+  .exp-title { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; color: var(--text-bright); margin-bottom: 0.75rem; line-height: 1.2; }
+  .exp-desc { font-size: 13px; color: var(--text-muted); line-height: 1.8; }
+  .exp-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+  .tag { font-size: 10px; letter-spacing: 0.1em; padding: 0.25rem 0.75rem; border: 1px solid var(--border); color: var(--text-muted); text-transform: uppercase; }
+
+  #projects .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .project-card { background: var(--bg); padding: 2rem; position: relative; transition: background 0.2s; }
+  .project-card:hover { background: var(--bg2); }
+  .project-num { font-size: 10px; color: var(--amber-dim); letter-spacing: 0.15em; margin-bottom: 1.5rem; display: block; }
+  .project-name { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--text-bright); margin-bottom: 0.75rem; line-height: 1.2; }
+  .project-desc { font-size: 12px; color: var(--text-muted); line-height: 1.8; margin-bottom: 1.5rem; }
+  .project-link { font-size: 10px; letter-spacing: 0.15em; color: var(--amber); text-transform: uppercase; }
+  .project-card:hover .project-link::after { content: ' →'; }
+
+  #skills .skills-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+  .skill-group-title { font-size: 10px; letter-spacing: 0.2em; color: var(--amber); text-transform: uppercase; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+  .skill-list { list-style: none; }
+  .skill-list li { font-size: 13px; color: var(--text-muted); padding: 0.35rem 0; border-bottom: 1px solid rgba(255,255,255,0.03); transition: color 0.15s; }
+  .skill-list li:hover { color: var(--text); }
+  .skill-list li::before { content: '— '; color: var(--amber-dim); }
+
+  #education .edu-list { display: flex; flex-direction: column; }
+  .edu-item { display: grid; grid-template-columns: 170px 1fr; gap: 3rem; padding: 2.5rem 0; border-bottom: 1px solid var(--border); }
+  .edu-year { font-size: 11px; color: var(--text-muted); padding-top: 0.2rem; }
+  .edu-degree { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--text-bright); margin-bottom: 0.25rem; }
+  .edu-school { font-size: 12px; color: var(--amber); margin-bottom: 0.5rem; }
+  .edu-detail { font-size: 12px; color: var(--text-muted); line-height: 1.8; }
+
+  #contact { padding-bottom: 8rem; }
+  .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  .contact-copy { font-size: 13px; color: var(--text-muted); line-height: 1.9; }
+  .contact-copy p + p { margin-top: 1rem; }
+  .contact-links { display: flex; flex-direction: column; }
+  .contact-link { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 0; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--text); transition: color 0.2s; }
+  .contact-link:hover { color: var(--amber); }
+  .contact-link-label { font-size: 10px; color: var(--text-muted); letter-spacing: 0.12em; text-transform: uppercase; }
+  .contact-link-val { font-family: var(--serif); font-size: 1.2rem; font-style: italic; }
+  .contact-link-arrow { color: var(--text-muted); font-size: 16px; transition: transform 0.2s; }
+  .contact-link:hover .contact-link-arrow { transform: translateX(4px); color: var(--amber); }
+
+  footer { padding: 1.5rem 3rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: var(--text-muted); letter-spacing: 0.1em; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s, transform 0.6s; }
+  .reveal.visible { opacity: 1; transform: none; }
+  .cursor::after { content: '_'; color: var(--amber); animation: blink 1s step-end infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  @media (max-width: 900px) {
+    nav { padding: 1.25rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    section { padding: 5rem 1.5rem; }
+    #hero { padding: 0 1.5rem 4rem; }
+    #about .about-grid, .contact-inner { grid-template-columns: 1fr; }
+    .exp-item, .edu-item { grid-template-columns: 1fr; gap: 0.75rem; }
+    #projects .projects-grid { grid-template-columns: 1fr 1fr; }
+    #skills .skills-grid { grid-template-columns: 1fr 1fr; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    #projects .projects-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#hero" class="nav-logo"><span>~/</span>anusha</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-tag">AI Engineer · Pittsburgh, PA · Open to work</div>
+  <h1 class="hero-name">Anusha<br><em>Shiva Kumar</em></h1>
+  <p class="hero-sub">
+    I build AI systems that actually work in production, not just in demos. RAG pipelines, multi-agent orchestration, memory architectures, real-time voice inference — end to end, from research to deployment.
+  </p>
+  <div class="hero-cta">
+    <a href="#projects" class="btn-primary">View my work</a>
+    <a href="#contact" class="btn-ghost">Get in touch</a>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-label">About</div>
+  <h2 class="section-title">A little about <em>me</em></h2>
+  <div class="about-grid">
+    <div class="about-bio reveal">
+      <p>I'm an AI Engineer specializing in building scalable, production-grade intelligent systems. My work sits at the intersection of LLMs, backend engineering, DevOps, and data science — translating research into reliable systems that reduce friction for real people, not just automating tasks, but anticipating needs.</p>
+      <p>Currently at Mira Copilot, I architect end-to-end pipelines spanning retrieval-augmented generation, multi-agent orchestration, dual-memory architectures, and real-time voice interfaces. I also own the deployment side — cloud infrastructure, containerization, and CI/CD from dev to production.</p>
+      <p>Before focusing on AI, I sharpened my analytical foundation through data consulting at FedEx Ground (via Katz / KPMG — placing 2nd in the KPMG US Cup) and academic research at the University of Pittsburgh, where I graduated with a 3.9 GPA in Information Science.</p>
+    </div>
+    <div class="about-stats reveal">
+      <div class="stat"><span class="stat-num">3+</span><span class="stat-label">Years experience</span></div>
+      <div class="stat"><span class="stat-num">12+</span><span class="stat-label">Projects shipped</span></div>
+      <div class="stat"><span class="stat-num">3.9</span><span class="stat-label">MS GPA, Pitt</span></div>
+      <div class="stat"><span class="stat-num">2nd</span><span class="stat-label">KPMG US Cup</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="section-label">Experience</div>
+  <h2 class="section-title">Where I've <em>worked</em></h2>
+  <div class="exp-list">
+
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <span class="exp-date">Oct 2025 — Present</span>
+        <span class="exp-company">Mira Copilot</span>
+        <span class="exp-badge">Remote · Full-time</span>
+      </div>
+      <div>
+        <h3 class="exp-title">AI Engineer</h3>
+        <p class="exp-desc">Built backend architecture for an AI assistant integrating voice input, LLM reasoning, memory retrieval, and task execution. Architected end-to-end RAG pipeline enabling context-aware responses grounded in user-specific data, supporting multi-turn conversations at scale. Designed dual-memory architecture separating short-term contextual state from long-term learned user preferences. Built ReAct-style agent pipeline with intent classification, tool routing, and clarification-handling logic. Integrated real-time STT/TTS pipelines for low-latency voice-first interactions. Developed scheduling intelligence with calendar overlap detection and an explainable meeting-time ranking engine.</p>
+        <div class="exp-tags">
+          <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">LangChain</span>
+          <span class="tag">RAG</span><span class="tag">PostgreSQL</span><span class="tag">Redis</span>
+          <span class="tag">AWS</span><span class="tag">Docker</span><span class="tag">CI/CD</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <span class="exp-date">Sep 2025 — Present</span>
+        <span class="exp-company">Product Manager Accelerator</span>
+        <span class="exp-badge">Remote · Part-time</span>
+      </div>
+      <div>
+        <h3 class="exp-title">AI Software Engineer</h3>
+        <p class="exp-desc">Contributing as an AI/ML Engineer on production-grade AI products — designing and shipping intelligent systems end-to-end across backend, AI infrastructure, and deployment. Built RAG pipelines, LLM orchestration layers, agent-based systems, and memory architectures. Designed FastAPI services and REST APIs. Collaborated cross-functionally with PMs, engineers, and researchers from MVP to production in a distributed async environment.</p>
+        <div class="exp-tags">
+          <span class="tag">LLM Orchestration</span><span class="tag">RAG</span>
+          <span class="tag">FastAPI</span><span class="tag">Docker</span><span class="tag">CI/CD</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <span class="exp-date">Jul 2024 — Dec 2025</span>
+        <span class="exp-company">University of Pittsburgh</span>
+        <span class="exp-badge">Hybrid · Part-time</span>
+      </div>
+      <div>
+        <h3 class="exp-title">Applied Data Scientist (Research)</h3>
+        <p class="exp-desc">Supported interdisciplinary health and social science research by analyzing large behavioral and demographic datasets. Conducted statistical analysis on 50K+ research records using SPSS and Excel — applying descriptive statistics, chi-square tests, and regression modeling. Produced 10+ analytical reports and visualizations translating complex statistical findings into clear insights for academic and non-technical audiences. Also served as Course Coordinator for the Master's in Data Science program (Aug 2024 – Aug 2025).</p>
+        <div class="exp-tags">
+          <span class="tag">Python</span><span class="tag">SPSS</span>
+          <span class="tag">Statistical Analysis</span><span class="tag">Data Visualization</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <span class="exp-date">Jan 2024 — Apr 2024</span>
+        <span class="exp-company">FedEx Ground</span>
+        <span class="exp-badge">via Katz / KPMG</span>
+      </div>
+      <div>
+        <h3 class="exp-title">Business Data Analyst</h3>
+        <p class="exp-desc">Cross-functional consulting engagement optimizing last-mile delivery operations for FedEx Ground with a team of 7 analysts. Used SQL, Python, Excel, and Tableau to analyze service thresholds, driving a 15% improvement in delivery efficiency. Built real-time dashboards monitoring operational metrics. Conducted exploratory analysis on volume-density trends, leading to a projected 9.8% annual cost savings. Project placed 2nd in the KPMG US Cup Competition for strategic innovation.</p>
+        <div class="exp-tags">
+          <span class="tag">SQL</span><span class="tag">Python</span>
+          <span class="tag">Tableau</span><span class="tag">Excel</span><span class="tag">Analytics</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <span class="exp-date">Jan 2022 — Mar 2022</span>
+        <span class="exp-company">Duke University</span>
+        <span class="exp-badge">Remote · Internship</span>
+      </div>
+      <div>
+        <h3 class="exp-title">Research Software Developer</h3>
+        <p class="exp-desc">Built a mobile application for real-time sign language to English conversion in Duke's Computer Science AI research lab under faculty supervision. Applied computer vision and gesture recognition to enable accessible communication for the hearing-impaired. Designed end-to-end mobile architecture supporting real-time gesture capture, processing, and language output.</p>
+        <div class="exp-tags">
+          <span class="tag">Computer Vision</span><span class="tag">Mobile Dev</span>
+          <span class="tag">Gesture Recognition</span><span class="tag">AI Research</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-label">Projects</div>
+  <h2 class="section-title">Selected <em>work</em></h2>
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <span class="project-num">01 · 2026 · Active</span>
+      <h3 class="project-name">RewardWise</h3>
+      <p class="project-desc">Full-stack AI travel rewards optimizer that helps users decide when to pay with points vs. cash. Built a deterministic decision engine evaluating loyalty program reward valuations to generate optimal booking recommendations, with FastAPI backend and Next.js frontend.</p>
+      <div class="exp-tags" style="margin-bottom:1.5rem;">
+        <span class="tag">Next.js</span><span class="tag">FastAPI</span>
+        <span class="tag">Docker</span><span class="tag">CI/CD</span>
+      </div>
+      <span class="project-link">View project</span>
+    </div>
+
+    <div class="project-card reveal">
+      <span class="project-num">02 · 2025 · Production</span>
+      <h3 class="project-name">Mira Voice AI Backend</h3>
+      <p class="project-desc">Core backend for a voice-first AI scheduling assistant. Architected end-to-end RAG pipeline, dual-memory system, ReAct agent orchestration with intent classification and tool routing, real-time STT/TTS streaming, and a calendar intelligence engine with explainable meeting suggestions.</p>
+      <div class="exp-tags" style="margin-bottom:1.5rem;">
+        <span class="tag">LangChain</span><span class="tag">RAG</span>
+        <span class="tag">FastAPI</span><span class="tag">AWS</span>
+      </div>
+      <span class="project-link">View project</span>
+    </div>
+
+    <div class="project-card reveal">
+      <span class="project-num">03 · 2024</span>
+      <h3 class="project-name">Reflections</h3>
+      <p class="project-desc">Full-stack photo gallery platform with user authentication, role-based access control, photo upload and metadata management, commenting, and admin moderation. Focused on responsive, device-friendly UI design with Vanilla CSS and Bootstrap.</p>
+      <div class="exp-tags" style="margin-bottom:1.5rem;">
+        <span class="tag">Node.js</span><span class="tag">Express</span>
+        <span class="tag">MongoDB</span><span class="tag">Bootstrap</span>
+      </div>
+      <span class="project-link">View project</span>
+    </div>
+
+    <div class="project-card reveal">
+      <span class="project-num">04 · 2024 · Award</span>
+      <h3 class="project-name">FedEx Delivery Optimizer</h3>
+      <p class="project-desc">Data analytics consulting project optimizing last-mile delivery for FedEx Ground. Built real-time Tableau dashboards, modeled 15% efficiency improvements, identified 9.8% projected cost savings through volume-density analysis. 2nd place, KPMG US Cup Competition.</p>
+      <div class="exp-tags" style="margin-bottom:1.5rem;">
+        <span class="tag">Python</span><span class="tag">SQL</span><span class="tag">Tableau</span>
+      </div>
+      <span class="project-link">View project</span>
+    </div>
+
+    <div class="project-card reveal">
+      <span class="project-num">05 · 2022 · Research</span>
+      <h3 class="project-name">Sign Language Translator</h3>
+      <p class="project-desc">Mobile app for real-time sign language to English conversion, built at Duke University's AI research lab. Applied computer vision and gesture recognition to break communication barriers for the hearing-impaired community. End-to-end mobile architecture with real-time gesture processing.</p>
+      <div class="exp-tags" style="margin-bottom:1.5rem;">
+        <span class="tag">Computer Vision</span><span class="tag">Mobile</span><span class="tag">AI</span>
+      </div>
+      <span class="project-link">View project</span>
+    </div>
+
+    <div class="project-card reveal">
+      <span class="project-num">06 · 2022 · Published</span>
+      <h3 class="project-name">HGS Algorithm Research</h3>
+      <p class="project-desc">Led a 4-member team enhancing the Hunger Game Search meta-heuristic algorithm — improving computational speed and mitigating premature convergence. Assessed with k-means clustering techniques. Published in Webology, September 2022.</p>
+      <div class="exp-tags" style="margin-bottom:1.5rem;">
+        <span class="tag">Python</span><span class="tag">ML</span><span class="tag">Research</span>
+      </div>
+      <span class="project-link">View publication</span>
+    </div>
+
+  </div>
+</section>
+
+<section id="skills">
+  <div class="section-label">Skills</div>
+  <h2 class="section-title">What I <em>work with</em></h2>
+  <div class="skills-grid">
+    <div class="reveal">
+      <div class="skill-group-title">Languages</div>
+      <ul class="skill-list">
+        <li>Python</li>
+        <li>JavaScript / TypeScript</li>
+        <li>SQL</li>
+        <li>HTML & CSS</li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="skill-group-title">AI / ML</div>
+      <ul class="skill-list">
+        <li>LangChain</li>
+        <li>PyTorch</li>
+        <li>RAG pipelines</li>
+        <li>Agent orchestration</li>
+        <li>LLM fine-tuning</li>
+        <li>MLOps / MLSecOps</li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="skill-group-title">Backend & Data</div>
+      <ul class="skill-list">
+        <li>FastAPI</li>
+        <li>Node.js / Express</li>
+        <li>PostgreSQL</li>
+        <li>Redis</li>
+        <li>MongoDB</li>
+        <li>REST APIs</li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="skill-group-title">Infra & Tooling</div>
+      <ul class="skill-list">
+        <li>AWS</li>
+        <li>Docker</li>
+        <li>CI/CD pipelines</li>
+        <li>Tableau</li>
+        <li>SPSS</li>
+        <li>Git</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="section-label">Education</div>
+  <h2 class="section-title">Where I <em>learned</em></h2>
+  <div class="edu-list">
+    <div class="edu-item reveal">
+      <div class="edu-year">Aug 2023 — May 2025</div>
+      <div>
+        <h3 class="edu-degree">M.S. Information Science</h3>
+        <div class="edu-school">University of Pittsburgh</div>
+        <p class="edu-detail">GPA: 3.9 · Specialization in AI, data science, and health informatics. Worked as Applied Data Scientist (Research) and Course Coordinator for the Master's in Data Science program.</p>
+      </div>
+    </div>
+    <div class="edu-item reveal">
+      <div class="edu-year">Aug 2018 — Jul 2022</div>
+      <div>
+        <h3 class="edu-degree">B.E. Computer Science</h3>
+        <div class="edu-school">Ramaiah Institute of Technology</div>
+        <p class="edu-detail">Published research in optimization algorithms. Led award-winning project team — Best Project at Pradarshana for VR-based physical rehabilitation for cerebral palsy patients.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-label">Contact</div>
+  <h2 class="section-title">Let's <em>talk</em><span class="cursor"></span></h2>
+  <div class="contact-inner">
+    <div class="contact-copy reveal">
+      <p>I'm open to AI/ML Engineer and Software Engineer roles where I can build things that matter — systems that reduce friction for real people.</p>
+      <p>Whether you have a role in mind, a collaboration idea, or just want to connect — I'd love to hear from you.</p>
+    </div>
+    <div class="contact-links reveal">
+      <a href="https://www.linkedin.com/in/anusha-shivakumar/" target="_blank" class="contact-link">
+        <div>
+          <div class="contact-link-label">LinkedIn</div>
+          <div class="contact-link-val">anusha-shivakumar</div>
+        </div>
+        <span class="contact-link-arrow">→</span>
+      </a>
+      <a href="mailto:anushagsk01@gmail.com" class="contact-link">
+        <div>
+          <div class="contact-link-label">Email</div>
+          <div class="contact-link-val">anushagsk01@gmail.com</div>
+        </div>
+        <span class="contact-link-arrow">→</span>
+      </a>
+      <a href="https://github.com/AnushaShivakumar" target="_blank" class="contact-link">
+        <div>
+          <div class="contact-link-label">GitHub</div>
+          <div class="contact-link-val">AnushaShivakumar</div>
+        </div>
+        <span class="contact-link-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Anusha Shiva Kumar</span>
+  <span>Pittsburgh, PA · Open to work</span>
+</footer>
+
+<script>
+  (function() {
+    const items = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          e.target.style.transitionDelay = (i * 0.08) + 's';
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    items.forEach(el => observer.observe(el));
+  })();
+</script>
+</body>
+</html>
